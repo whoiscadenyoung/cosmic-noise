@@ -11,19 +11,13 @@ handoffs:
 tools: [execute/runInTerminal, edit/createFile, edit/createDirectory, edit/editFiles, todo]
 ---
 
-## Prerequisites
-
-### User Input
+## User Input
 
 ```text
 $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
-
-### Progress
-
-Use #tool:todo to create a progress checklist for this feature specification. Update it as you complete each step.
 
 ## CLI Tools
 
@@ -32,6 +26,19 @@ This CLI Tool is a custom helper library to assist you in the spec-driven develo
 ```
 bun /Users/cadenyoung/Developer/spec/src/index.ts
 ```
+
+## Progress Tracking
+
+You MUST use #tool:todo to create a progress checklist for this outline. Update it as you complete each step.
+
+The steps should correspond to the outline as follows:
+
+1. Create a GitHub issue
+2. Create the spec file and branch
+3. Build the specification
+4. Update the spec file
+5. Validate specification quality
+6. Report completion results
 
 ## Outline
 
@@ -73,10 +80,12 @@ Given that feature description, do this:
       
       - The output is a JSON object with `issueNumber` and `issueUrl` fields
    
-   f. **Report the issue creation results** to the user in the chat window:
-
-      - "Created issue #{issueNumber}: {issueUrl}"
-      - If an error occurs, display "Error creating issue: {errorMessage}" and do not proceed to the next steps
+   f. **If an error occurs, STOP immediately**: Instead:
+   
+      - Report the error to the user in the chat window with the message: "Error creating issue ({errorType}): {errorMessage}".
+      - Wait for user guidance before proceeding.
+   
+   g. **Report the issue creation results** to the user in the chat window: "Created issue #{issueNumber}: {issueUrl}"
 
 2. **Use the spec CLI to create the spec for the feature**:
 
@@ -113,10 +122,12 @@ Given that feature description, do this:
 
       - The output is a JSON object with `branchName`, `specFile`, and `featureDir` fields
 
-   f. **Report the spec creation results** to the user in the chat window:
-
-      - "Created branch {branchName} with spec file at {specFile}"
-      - If an error occurs, display "Error creating spec ({errorType}): {errorMessage}" and do not proceed to the next steps
+   f. **If an error occurs, STOP immediately**: Even if the spec file was created, DO NOT continue the workflow. Instead:
+   
+      - Report the error to the user in the chat window with the message: "Error creating spec ({errorType}): {errorMessage}".
+      - Wait for user guidance before proceeding.
+   
+   g. **Report the spec creation results** to the user in the chat window: "Created branch {branchName} with spec file at {specFile}"
 
 3. Follow this execution flow:
 
