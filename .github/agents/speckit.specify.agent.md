@@ -33,52 +33,6 @@ This CLI Tool is a custom helper library to assist you in the spec-driven develo
 bun /Users/cadenyoung/Developer/spec/src/index.ts
 ```
 
-### `create spec`
-
-#### Description
-
-The create spec command will perform the following actions:
-
-1. Create and check out a new branch for the spec
-   - Format: `{issueType}/{issueNumber}-{slug}`
-   - Example: `feature/123-user-auth`
-
-2. Generate a new spec file from the template and place it in the appropriate directory based on the slug and issue number
-   - Format: `specs/{issueNumber}-{slug}/spec.md`
-   - Example: `specs/123-user-auth/spec.md`
-
-3. Add the new spec file to git staging for the created branch
-
-4. Commit the new spec file with a message referencing the issue number
-   - Example: `git commit -m "Create spec for issue #123: user-auth"`
-
-5. Push the new branch to the remote repository
-
-#### Usage
-
-```zsh
-{SCRIPT} spec create \
---type "{issueType}" \
---number {issueNumber} \
---slug "{slug}" \
-```
-
-#### Required arguments
-
-- `issueType`: The type of issue to create
-   - Use "fix" if only addressing a bug fix.
-   - Use "feature" for all other types of work, including new features, improvements, refactors, etc.
-- `number`: The issue number that was created in the previous step, which will be used in the branch name and spec file path
-- `slug`: A concise, 2-4 word slug describing the feature (e.g., "user-auth", "analytics-dashboard")
-
-#### Output
-
-The expected output is a JSON object containing the following properties:
-
-- `branchName`: The name of the created branch
-- `specFile`: The path to the generated spec file
-- `featureDir`: The path to the feature directory containing the spec and related files
-
 ## Outline
 
 The text the user typed after `/speckit.specify` in the triggering message **is** the feature description. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
@@ -118,12 +72,11 @@ Given that feature description, do this:
    e. **Read the command output** to extract the issue number and URL.
       
       - The output is a JSON object with `issueNumber` and `issueUrl` fields
-      - Display a message to the user confirming issue creation: "Created issue #{issueNumber}: {issueUrl}"
+   
+   f. **Report the issue creation results** to the user in the chat window:
 
-   f. **Handle issue creation errors**:
-      
-      - If the command fails, display an error message: "Error creating issue: {errorMessage}"
-      - Do not proceed to the next steps if issue creation fails
+      - "Created issue #{issueNumber}: {issueUrl}"
+      - If an error occurs, display "Error creating issue: {errorMessage}" and do not proceed to the next steps
 
 2. **Use the spec CLI to create the spec for the feature**:
 
@@ -150,7 +103,7 @@ Given that feature description, do this:
       # The command will create and checkout a new branch in the format `{issueType}/{issueNumber}-{slug}` (e.g., "feature/123-user-auth")
       # It will also generate a new spec file from the template and place it in `specs/{issueNumber}-{slug}/spec.md` (e.g., "specs/123-user-auth/spec.md")
       # Finally, it will add the new spec file to git staging for the created branch, commit it with a message referencing the issue number, and push the branch to the remote repository.
-      {SCRIPT} spec create \
+      {SCRIPT} create spec \
       --slug "{slug}" \
       --type "{issueType}" \
       --number {issueNumber} \
@@ -159,12 +112,11 @@ Given that feature description, do this:
    e. **Read the command output** to extract the branch name, spec file path, and feature directory.
 
       - The output is a JSON object with `branchName`, `specFile`, and `featureDir` fields
-      - Display a message to the user confirming spec creation: "Created branch {branchName} with spec file at {specFile}"
 
-   f. **Handle spec creation errors**:
+   f. **Report the spec creation results** to the user in the chat window:
 
-      - If the command fails, display an error message: "Error creating spec: {errorMessage}"
-      - Do not proceed to the next steps if spec creation fails
+      - "Created branch {branchName} with spec file at {specFile}"
+      - If an error occurs, display "Error creating spec ({errorType}): {errorMessage}" and do not proceed to the next steps
 
 3. Follow this execution flow:
 
@@ -286,7 +238,7 @@ Given that feature description, do this:
 
    d. **Update Checklist**: After each validation iteration, update the checklist file with current pass/fail status
 
-6. Report completion with branch name, spec file path, checklist results, and readiness for the next phase (`/speckit.clarify` or `/speckit.plan`).
+6. Report completion with issue number and url, branch name, spec file path, checklist results, and readiness for the next phase (`/speckit.clarify` or `/speckit.plan`).
 
 **NOTE:** The script creates and checks out the new branch and initializes the spec file before writing.
 
