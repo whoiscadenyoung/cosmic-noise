@@ -7,5 +7,16 @@
   },
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
+  },
+  "chat.promptFilesRecommendations": {
+    "speckit.constitution": true,
+    "speckit.specify": true,
+    "speckit.clarify": true,
+    "speckit.plan": true,
+    "speckit.tasks": true,
+    "speckit.implement": true,
+    "speckit.analyze": true,
+    "speckit.checklist": true,
+    "speckit.taskstoissues": true
   }
 }
